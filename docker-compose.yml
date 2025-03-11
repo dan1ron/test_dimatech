@@ -1,0 +1,33 @@
+version: '3.7'
+
+volumes:
+  pgdata:
+
+services:
+  postgres:
+    image: postgres:14.13-alpine3.20
+    ports:
+      - "5432:5432"
+    volumes:
+      - "pgdata:/var/lib/postgresql/data/pgdata:cached"
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata/
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_USER=usr
+      - POSTGRES_PASSWORD=pwd
+      - POSTGRES_DB=db
+
+  app:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./deploy/docker/Dockerfile
+    ports:
+      - "8000:8000"
+    command: "uvicorn app.main:app --host=0.0.0.0 "
+    volumes:
+      - .:/sources:cached
+    depends_on:
+      - postgres
+    env_file:
+      - ./deploy/docker/local.env

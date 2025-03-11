@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+uvicorn = "*"
+sqlalchemy = "*"
+asyncpg = "*"
+passlib = "*"
+python-jose = "*"
+alembic = "==1.13.2"
+sqlmodel = "*"
+pydantic-settings = "*"
+fastapi = "*"
+pydantic = {extras = ["email"], version = "*"}
+greenlet = "*"
+dotenv = "*"
+
+[dev-packages]
+pipenv = "==v2024.0.1"
+ruff = "==0.6.6"
+
+[requires]
+python_version = "3.12"
