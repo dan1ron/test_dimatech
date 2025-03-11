@@ -32,7 +32,7 @@ class User(UserBase):
 UserUpdate = create_model(
     'UserUpdate',
     __base__=User,
-    **{field: (field_type.annotation, None) for field, field_type in User.__pydantic_fields__.items()}
+    **{field: (field_type.annotation, None) for field, field_type in User.__pydantic_fields__.items()},
 )
 
 

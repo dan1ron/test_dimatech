@@ -15,6 +15,7 @@ async def login_for_access_token(
     db: deps.SessionDep,
     form_data: schemas.UserLogin,
 ):
+    """Get access token and refresh token."""
     user = await authenticate_user(db, form_data.email, form_data.password)
     if not user:
         raise HTTPException(
@@ -31,6 +32,7 @@ async def login_for_access_token(
 
 @router.post('/refresh-token', response_model=schemas.ResponseAccessToken)
 async def refresh_token(refresh_token: str, db: deps.SessionDep):
+    """Get new access token using refresh token."""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail='Could not validate credentials',

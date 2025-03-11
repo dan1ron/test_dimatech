@@ -5,7 +5,6 @@ from pydantic import PostgresDsn, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-
 class Postgres(pydantic.BaseModel):
     host: str
     port: int

@@ -12,17 +12,14 @@ pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Проверяет, совпадает ли пароль с хэшем."""
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
-    """Хэширует пароль."""
     return pwd_context.hash(password)
 
 
 async def authenticate_user(db: deps.SessionDep, email: str, password: str) -> Optional[models.User]:
-    """Аутентифицирует пользователя по email и паролю."""
     user = await crud.get_user_by_email(db, email)
     if not user:
         return False
@@ -44,7 +41,6 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 
 
 def get_email_from_access_token(access_token: str) -> Optional[str]:
-    """Декодирует JWT токен."""
     try:
         payload = jwt.decode(access_token, settings.jwt.secret_key, algorithms=[settings.jwt.algorithm])
         email: str = payload.get('sub')

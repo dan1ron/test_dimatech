@@ -11,10 +11,13 @@ router = APIRouter()
 
 @router.post('/webhook', responses={400: {'model': schemas.Message}})
 async def webhook(payment: schemas.Payment, db: deps.SessionDep):
-    data_to_sign = f'{payment.account_id}{payment.amount}{payment.transaction_id}{payment.user_id}{settings.signature_secret_key}'
+    """Process payment webhook."""
+    data_to_sign = (
+        f'{payment.account_id}{payment.amount}{payment.transaction_id}{payment.user_id}{settings.signature_secret_key}'
+    )
     expected_signature = hashlib.sha256(data_to_sign.encode()).hexdigest()
     if payment.signature != expected_signature:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Invalid signature')
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid signature')
 
     try:
         existing_payment = await crud.get_payment_by_transaction_id(db, transaction_id=payment.transaction_id)
